@@ -38,4 +38,14 @@ def test_post_deleted(create_post):
     assert returned_post.status_code == 200
 
 
-# Написать тесты с параметризацией
+@pytest.mark.parametrize('resource', ['albums', 'todos', 'posts'])
+def test_user_methods(resource, id=1):
+    url = 'https://jsonplaceholder.typicode.com/users/{}/{}'.format(id, resource)
+    resources = get_request(url)
+    assert resources.json() != []
+
+@pytest.mark.parametrize('id', range(1, 10))
+def test_post_comments(id):
+    url = 'https://jsonplaceholder.typicode.com/posts/{}/comments'.format(id)
+    comments = get_request(url)
+    assert comments.json() != []
